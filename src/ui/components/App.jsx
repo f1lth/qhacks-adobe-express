@@ -9,6 +9,7 @@ import { Button } from "@swc-react/button";
 import { Theme } from "@swc-react/theme";
 import React from "react";
 import "./App.css";
+import { DownloadButton } from "./Download";
 
 const App = ({ addOnUISdk, sandboxProxy }) => {
     function handleClick() {
@@ -20,9 +21,8 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
             <div className="container">
-                <Button size="m" onClick={handleClick}>
-                    Create Rectangle
-                </Button>
+                <h1>Datamosh!</h1>
+                <DownloadButton addOnUISdk={addOnUISdk} />
             </div>
         </Theme>
     );

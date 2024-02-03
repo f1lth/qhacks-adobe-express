@@ -4,11 +4,15 @@ import App from "./components/App";
 
 import addOnUISdk from "https://new.express.adobe.com/static/add-on-sdk/sdk.js";
 
+
+
 addOnUISdk.ready.then(async () => {
     console.log("addOnUISdk is ready for use.");
 
     // Get the UI runtime.
     const { runtime } = addOnUISdk.instance;
+
+
 
     // Get the proxy object, which is required
     // to call the APIs defined in the Document Sandbox runtime
