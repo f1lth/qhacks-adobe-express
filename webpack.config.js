@@ -55,16 +55,13 @@ module.exports = {
 
         // other webpack configurations...
         devServer: {
-          proxy: {
-            '/api': {
-              target: 'http://localhost:5241', // Change this to your Adobe Express Plugin URL
-              changeOrigin: true,
+          headers: {
+
               headers: {
                 'Cross-Origin-Opener-Policy': 'same-origin',
-                'Cross-Origin-Embedder-Policy': 'require-corp'
-              }
-            }
+                'Cross-Origin-Embedder-Policy': 'require-corp',
           }
+        },
         },
         
       

@@ -1,80 +1,86 @@
 import React, { useState } from "react";
 import { Button } from "@swc-react/button";
-import { Theme } from "@swc-react/theme";
-import { useEffect } from "react";31
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { fetchFile, toBlobURL } from "@ffmpeg/util";
-
-const ffmpeg = new FFmpeg();
 
 
 export function DownloadButton({ addOnUISdk }) {
     const [downloadUrl, setDownloadUrl] = useState("");
     const [loaded, setLoaded] = useState(false);
-    const [videoSrc, setVideoSrc] = useState('');
-    const [processedVideoUrl, setProcessedVideoUrl] = useState('');
-    const [logMessage, setLogMessage] = useState('');
-
-
-    
-  const load = async () => {
-    const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
-    
-    ffmpeg.on("log", ({ message }) => {
-      if (messageRef.current) messageRef.current.innerHTML = message;
-    });
-    console.log('awaiting load')
-    
-    // toBlobURL is used to bypass CORS issue, urls with the same
-    // domain can be used directly.
-    /**
-    await ffmpeg.load({
-      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-      wasmURL: await toBlobURL(
-        `${baseURL}/ffmpeg-core.wasm`,
-        "application/wasm"
-      ),
-      workerURL: await toBlobURL(
-        `${baseURL}/ffmpeg-core.worker.js`,
-        "text/javascript"
-      ),
-    });
-     */
-    await ffmpeg.load();
-    console.log('loaded')
-    setLoaded(true);
-  };
-
-    const datamoshVideo = async () => {
-
-        // Write the video file to FFmpeg's virtual file system
-        await ffmpeg.writeFile('input.mp4', await fetchFile(downloadUrl));
-
-        // Example FFmpeg command to manipulate the video for datamoshing
-        // Note: This is a placeholder and may need specific adjustments
-        await ffmpeg.run('-i', 'input.mp4', '-filter_complex', '[0:v]...', 'output.mp4');
-
-        // Read the processed file and create a URL for it
-        const data = await ffmpeg.readFile('output.mp4');
-        const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
-
-        // Set the processed video URL for display or download
-        setProcessedVideoUrl(url);
-    };
+    const [filterImage, setFilterImage] = useState("");
+    const [filterImageBlob, setFilterImageBlob] = useState(new Blob());
+    const [image, setImage] = useState("");
+    const [imageBlob, setImageBlob] = useState(new Blob());
 
 
     const handleDownload = async () => {
         const response = await addOnUISdk.app.document.createRenditions({
             range: "currentPage",
-            format: "video/mp4",
+            format: "image/jpeg",
         });
 
         const url = URL.createObjectURL(response[0].blob);
-        setDownloadUrl(url);
-        
-
+        setImage(url);
+        setImageBlob(response[0].blob);
 
     };
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    async function processImageBlob(imageBlob, options) {
+
+        console.log(typeof imageBlob); // Should be 'object'
+        console.log(imageBlob instanceof Blob); // Should be true
+
+        // Options destructuring (default values can be set here)
+        const { 
+            continuous = true, 
+            continuousChance = 0.6, 
+            times = 50, 
+            minRatio = 0.1, 
+            maxRatio = 0.9 
+        } = options;
+    
+        console.log('Continuous mode:', continuous);
+        console.log('Continuous chance:', continuousChance);
+    
+        // Convert blob to ArrayBuffer
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const buf = new Uint8Array(arrayBuffer);
+    
+        const len = buf.length;
+        const min = Math.floor(len * minRatio);
+        const max = Math.floor(len * maxRatio);
+        console.log("Buffer length: " + len);
+        console.log("Randomly assigning values within bytes " + min + " and " + max);
+    
+        let offset = getRandomInt(min, max);
+        for (let i = 0; i < times; i++) {
+            buf[offset] = getRandomInt(0, 255);
+            if (continuous) {
+                if (continuousChance > Math.random() && (offset + 1 <= max)) {
+                    offset++;
+                } else {
+                    offset = getRandomInt(min, max);
+                }
+            } else {
+                offset = getRandomInt(min, max);
+            }
+        }
+    
+        // Convert the modified buffer back to a blob
+        const newBlob = new Blob([buf], { type: imageBlob.type });
+        setFilterImage(URL.createObjectURL(newBlob));
+    }
+    
+    // Example usage
+    // processImageBlob(yourImageBlob, {}).then(newBlob => {
+    //     const newBlobUrl = URL.createObjectURL(newBlob);
+    //     // You can use newBlobUrl as the src for an image or for download
+    // });
+    
+
+
 
     return (
         <>
@@ -85,28 +91,18 @@ export function DownloadButton({ addOnUISdk }) {
                     </Button>
                 </a>
             </div>
-            {downloadUrl && (
-                <div className="container">
-                    <video width="320" height="240" controls>
-                        <source src={downloadUrl} type="video/mp4" />
-                    </video>
-
-                    
-                    <Button onClick={() => load()}>load ffmpeg</Button>
-                </div>
-            )}
+            
+            {image && <img src={image} alt="rendition" />}
             {loaded && (
                 <div className="container">
                     <Button onClick={datamoshVideo}>Datamosh</Button>
                 </div>
             )}
-            {processedVideoUrl && loaded && (
-                <div className="container">
-                    <video width="320" height="240" controls>
-                        <source src={processedVideoUrl} type="video/mp4" />
-                        </video>
-                </div>  
-            )}
+            <div className="container">
+                <Button onClick={() => processImageBlob(imageBlob, {})}>do effects</Button>
+            </div>
+            {filterImage && <img src={filterImage} alt="rendition" />}
+|
         </>
     );
 }
