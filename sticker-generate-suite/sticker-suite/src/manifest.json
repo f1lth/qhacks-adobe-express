@@ -1,0 +1,22 @@
+{
+    "testId": "51f0b2b8-4877-43aa-94e7-7bdf7c881883",
+    "name": "Sticker Suite",
+    "version": "1.0.0",
+    "manifestVersion": 2,
+    "requirements": {
+        "apps": [
+            {
+                "name": "Express",
+                "apiVersion": 1
+            }
+        ]
+    },
+    "entryPoints": [
+        {
+            "type": "panel",
+            "id": "panel1",
+            "main": "index.html",
+            "documentSandbox": "code.js"
+        }
+    ]
+}
