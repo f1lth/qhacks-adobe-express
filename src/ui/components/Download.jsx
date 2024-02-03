@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Theme } from "@swc-react/theme";
 import { Button } from "@swc-react/button";
+import ReactLoading from 'react-loading';
 
+import "@spectrum-web-components/theme/express/scale-medium.js";
+import "@spectrum-web-components/theme/express/theme-light.js";
 
-export function DownloadButton({ addOnUISdk }) {
-    const [downloadUrl, setDownloadUrl] = useState("");
-    const [loaded, setLoaded] = useState(false);
+export function DownloadButton({ addOnUISdk, sandboxProxy }) {
+    const [loading, setLoading] = useState(false);
     const [filterImage, setFilterImage] = useState("");
     const [filterImageBlob, setFilterImageBlob] = useState(new Blob());
-    const [image, setImage] = useState("");
+    const [previewImage, setPreviewImage] = useState("");
     const [imageBlob, setImageBlob] = useState(new Blob());
+
+    useEffect(() => {
+        setLoading(true);
+        handleDownload();
+        setLoading(false);
+    }, []);
 
 
     const handleDownload = async () => {
@@ -18,7 +27,7 @@ export function DownloadButton({ addOnUISdk }) {
         });
 
         const url = URL.createObjectURL(response[0].blob);
-        setImage(url);
+        setPreviewImage(url);
         setImageBlob(response[0].blob);
 
     };
@@ -67,43 +76,212 @@ export function DownloadButton({ addOnUISdk }) {
                 offset = getRandomInt(min, max);
             }
         }
-    
+
         // Convert the modified buffer back to a blob
         const newBlob = new Blob([buf], { type: imageBlob.type });
         setFilterImage(URL.createObjectURL(newBlob));
+        setPreviewImage(URL.createObjectURL(newBlob));
+        setFilterImageBlob(newBlob);
+    }
+
+    async function fattycatty(imageBlob) {
+
+        function slambamboozle (data) {
+            const min = Math.min;
+          
+            // ??? what the fuck
+            for (let i = 0; i < data.length; i += 4) {
+              data[i + 0] = min(data[i + 0] * 1.4, 280);
+              data[i + 1] = min(data[i + 1] * 1.4, 280);
+              data[i + 2] = min(data[i + 2] * 1.4, 280);
+            }
+          
+            for (let i = 0; i < data.length; i += 4) {
+              data[i + 0] = min(data[i + 0] * 1.4, 280);
+              data[i + 1] = min(data[i + 1] * 1.4, 280);
+              data[i + 2] = min(data[i + 2] * 1.4, 280);
+            }
+          
+            for (let i = 0; i < data.length; i += 4) {
+              data[i + 0] = min(data[i + 0] * 1.4, getRandomInt(0, 256));
+              data[i + 1] = min(data[i + 1] * 1.4, getRandomInt(0, 256));
+              data[i + 2] = min(data[i + 2] * 1.4, getRandomInt(0, 256));
+            }
+          
+            // ヾ(⌐■_■)ノ♪
+            for (let i = 0; i < data.length; i += 4) {
+              data[i + 0] = min(data[i + 0] * 1.4, 31);
+              data[i + 1] = min(data[i + 1] * 1.4, 124);
+              data[i + 2] = min(data[i + 2] * 1.4, 255);
+            }
+          
+            return data;
+          };
+
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            const url = URL.createObjectURL(imageBlob);
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              const ctx = canvas.getContext('2d');
+              canvas.width = img.width;
+              canvas.height = img.height;
+              ctx.drawImage(img, 0, 0);
+              
+              const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+              slambamboozle(imageData.data); // Process the image data
+              ctx.putImageData(imageData, 0, 0);
+              
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  setFilterImage(URL.createObjectURL(blob));
+                  setFilterImageBlob(blob);
+                  setPreviewImage(URL.createObjectURL(blob));
+                  resolve();
+                } else {
+                  reject(new Error('Canvas to Blob conversion failed'));
+                }
+              }, imageBlob.type);
+              URL.revokeObjectURL(url);
+            };
+            img.onerror = () => reject(new Error('Image loading failed'));
+            img.src = url;
+  
+          });
     }
     
-    // Example usage
-    // processImageBlob(yourImageBlob, {}).then(newBlob => {
-    //     const newBlobUrl = URL.createObjectURL(newBlob);
-    //     // You can use newBlobUrl as the src for an image or for download
-    // });
-    
+    async function vaporwave(imageBlob) {
+        function manipulate (data) {
+            const COLORS = [
+              [0, 184, 255],
+              [255, 0, 193],
+              [150, 0, 255],
+              [0, 255, 249],
+            ];
+          
+            for (let i = 0; i < data.length; i += 4) {
+              if (data[i] <= 15 && data[i + 1] <= 15 && data[i + 2] <= 15) {
+                data[i] = 0;
+                data[i + 1] = 0;
+                data[i + 2] = 0;
+              } else if (
+                data[i] > 15 &&
+                data[i] <= 60 &&
+                data[i + 1] > 15 &&
+                data[i + 1] <= 60 &&
+                data[i + 2] > 15 &&
+                data[i + 2] <= 60
+              ) {
+                data[i] = COLORS[0][0];
+                data[i + 1] = COLORS[0][1];
+                data[i + 2] = COLORS[0][2];
+              } else if (
+                data[i] > 60 &&
+                data[i] <= 120 &&
+                data[i + 1] > 60 &&
+                data[i + 1] <= 120 &&
+                data[i + 2] > 60 &&
+                data[i + 2] <= 120
+              ) {
+                data[i] = COLORS[1][0];
+                data[i + 1] = COLORS[1][1];
+                data[i + 2] = COLORS[1][2];
+              } else if (
+                data[i] > 120 &&
+                data[i] <= 180 &&
+                data[i + 1] > 120 &&
+                data[i + 1] <= 180 &&
+                data[i + 2] > 120 &&
+                data[i + 2] <= 180
+              ) {
+                data[i] = COLORS[2][0];
+                data[i + 1] = COLORS[2][1];
+                data[i + 2] = COLORS[2][2];
+              } else if (
+                data[i] > 180 &&
+                data[i] <= 234 &&
+                data[i + 1] > 180 &&
+                data[i + 1] <= 234 &&
+                data[i + 2] > 180 &&
+                data[i + 2] <= 234
+              ) {
+                data[i] = COLORS[3][0];
+                data[i + 1] = COLORS[3][1];
+                data[i + 2] = COLORS[3][2];
+              } else if (data[i] >= 235 && data[i + 1] >= 235 && data[i + 2] >= 235) {
+                data[i] = 255;
+                data[i + 1] = 255;
+                data[i + 2] = 255;
+              }
+            }
+          
+            return data;
+          };
 
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          const url = URL.createObjectURL(imageBlob);
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            manipulate(imageData.data); // Process the image data
+            ctx.putImageData(imageData, 0, 0);
+            
+            canvas.toBlob((blob) => {
+              if (blob) {
+                setFilterImage(URL.createObjectURL(blob));
+                setFilterImageBlob(blob);
+                setPreviewImage(URL.createObjectURL(blob));
+                resolve();
+              } else {
+                reject(new Error('Canvas to Blob conversion failed'));
+              }
+            }, imageBlob.type);
+            URL.revokeObjectURL(url);
+          };
+          img.onerror = () => reject(new Error('Image loading failed'));
+          img.src = url;
 
+        });
+      }
+
+    async function handleInsertImage() {
+        console.log("Inserting sticker..");
+        const result = await sandboxProxy.createImage(filterImageBlob);
+    };
 
     return (
+        // make it so its either loading or displaying the image
+        loading ? <ReactLoading type={"spin"} color={"#000000"} height={667} width={375} /> :
         <>
-            <div className="container" >
-                <a href={downloadUrl} download="download" style={{ display: "flex", width: "100%", height: "100%", textDecoration: "none" }}>
-                    <Button onClick={handleDownload}>
-                        Download
-                    </Button>
-                </a>
+
+            
+            <div className="container">
+                <img src={previewImage}/> 
+
+                <Button onClick={() => handleDownload()}>Reload Canvas</Button>
             </div>
             
-            {image && <img src={image} alt="rendition" />}
-            {loaded && (
-                <div className="container">
-                    <Button onClick={datamoshVideo}>Datamosh</Button>
-                </div>
-            )}
             <div className="container">
-                <Button onClick={() => processImageBlob(imageBlob, {})}>do effects</Button>
+                <Button onClick={() => processImageBlob(imageBlob, {})}>Crush</Button>
             </div>
-            {filterImage && <img src={filterImage} alt="rendition" />}
-|
-        </>
+            <div className="container">
+                <Button onClick={() => vaporwave(imageBlob)}>Vaporwave</Button>
+            </div>
+            <div className="container">
+                <Button onClick={() => fattycatty(imageBlob)}>Blast</Button>
+            </div>
+            {filterImage && 
+                <div className="container">
+                    <Button onClick={() => handleInsertImage()}>Insert</Button>
+                </div>}
+                </>
+        
     );
 }
 
