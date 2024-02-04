@@ -2,6 +2,7 @@
 // import these spectrum web components modules:
 import "@spectrum-web-components/theme/express/scale-medium.js";
 import "@spectrum-web-components/theme/express/theme-light.js";
+import { green } from "@mui/material/colors";
 
 // To learn more about using "swc-react" visit:
 // https://opensource.adobe.com/spectrum-web-components/using-swc-react/
@@ -28,9 +29,13 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         // Please note that the below "<Theme>" component does not react to theme changes in Express.
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
+            <div className="logo" style={{display:"flex", justifyContent: "center",
+                                        alignItems: "center", width: "100%", height: "100%",
+                                        marginTop: "10px", marginBottom: "-25px" }}>
+                <h1 style={{fontFamily: 'Proxima Nova, monospace', color: green[900]}}>glyph.</h1>
+            </div>
             <div className="container">
-                <h1>Generate caption!</h1>
-                <p>To begin analyzing and generate a caption, start with downloading the poster.</p>
+                <p style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: '100'}}>begin boosting your social media presence!</p>
             </div>
             <div style={{display: "flex", justifyContent: "center"}}>
                     <DownloadButton addOnUISdk={addOnUISdk} />

@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@swc-react/button";
 import OpenAI from "openai";
 import ReactLoading from 'react-loading';
+import CachedIcon from '@mui/icons-material/Cached';
+import { IconButton } from "@mui/material";
+import { green } from '@mui/material/colors';
+import Typography from '@mui/material/Typography';
+
 
 const axios = require('axios');
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -13,7 +18,7 @@ export function DownloadButton({ addOnUISdk }) {
     const [downloadUrl, setDownloadUrl] = useState("");
     const [keyWord, setKeywords] = useState("");
     const [caption, setCaption] = useState("");
-    const [buttonText, setButtonText] = useState('Copy to Clipboard');
+    const [buttonText, setButtonText] = useState('copy to clipboard');
 
     useEffect(() => {
       setLoading(true);
@@ -107,13 +112,13 @@ export function DownloadButton({ addOnUISdk }) {
   
       const copyToClipboard = (text) => {
           navigator.clipboard.writeText(text).then(() => {
-              setButtonText('Copied!');
+              setButtonText('copied!');
               // Optionally reset the button text after a few seconds
-              setTimeout(() => setButtonText('Copy to Clipboard'), 3000);
+              setTimeout(() => setButtonText('copy to clipboard'), 3000);
           }, () => {
               setButtonText('Failed to copy!');
               // Optionally reset the button text after a few seconds
-              setTimeout(() => setButtonText('Copy to Clipboard'), 3000);
+              setTimeout(() => setButtonText('copy to clipboard'), 3000);
           });
       };
 
@@ -121,32 +126,54 @@ export function DownloadButton({ addOnUISdk }) {
       // check if loading if true, then show loading spinner
       <>
         {loading ? 
-          <div>
-            <p> Generating your caption... </p>
-            <ReactLoading type={"spin"} color={"#000000"} height={300} width={300} />
-
+          <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+            <p> Generating your caption...</p>
+            <ReactLoading type={"spin"} color={"#000000"} height={30} width={30} />
           </div> :
       
         
             <div className="container" >
                 {downloadUrl && !caption && (
-                    <div className="container">
-                        <img src={downloadUrl} width="200" height="240" style={{ border: "1px solid black", marginBottom: "10px"}}/>
-                        <input type="text" placeholder="Insert keywords." value={keyWord} onChange={(e) => setKeywords(e.target.value)} 
-                        style={{marginBottom: "5px"}}/>
-                        <div style={{display: "flex", justifyContent: "aligned"}}>
-                        <Button onClick={() => callAPIWithBase64Image(downloadUrl) }>Generate AI Caption</Button>
-                        <Button style={{marginLeft: "3px"}}>Undo</Button>
+                    <div className="container" style={{marginTop: "-30px"}}>
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                            <img src={downloadUrl} width="200" height="240" style={{ border: "0px solid black", marginBottom: "30px"}}/>
                         </div>
-                        <p>${caption}</p>
-                    </div>
+                        <input type="text" placeholder="Insert keywords to include in your caption" value={keyWord} onChange={(e) => setKeywords(e.target.value)} 
+
+                        style={{
+                            padding: '10px',
+                            border: '1px solid #ccc',
+                            backgroundColor: '#f0f0f0',
+                            fontSize: '10px',
+                            color: '#333',
+                            outline: 'none', // Remove the default outline on focus
+                            fontFamily: 'JetBrains Mono, monospace', // Change the font
+                            borderRadius: '4px', // Add rounded corners
+                            transition: '0.3s', // Add a smooth transition for focus
+                    }}/>
+                        <div style={{display: "flex", justifyContent: "aligned"}}>
+                        <Button id="prompt-submit" size="m" onClick={() => callAPIWithBase64Image(downloadUrl) }
+                        style={{height: "50%", width: "90%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228',
+                        marginTop: "10px"}}>
+                            generate AI caption
+                        </Button>
+                        <IconButton aria-label="checkbox" style={{ color: "#242424",borderRadius: '40px', marginTop: "6px"}}
+                        onClick={handleDownload}>
+                            <CachedIcon />
+                            <Typography variant="body2" style={{ fontSize: '0.8rem', fontFamily: 'JetBrains Mono, monospace'}}> refresh</Typography>
+                        </IconButton>
+                        </div>
+                        <p>{caption}</p>
+                    </div>  
                 )}
                 {caption && 
                 // create a text box with caption and a button which copies the caption to clipboard
                 <div className="container">
                     <p>{caption}</p>
-                    <Button onClick={() => copyToClipboard(caption)}>{buttonText}</Button>
-                    <Button onClick={() => handleReset()}>Regenerate</Button>
+                    <Button style={{height: "50%", width: "100%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228',
+                        marginBottom: "10px"}} onClick={() => copyToClipboard(caption)}>{buttonText}</Button>
+                    <Button style={{height: "50%", width: "100%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228',
+                        }} onClick={() => handleReset()}>regenerate</Button>
                 </div>}
             </div>}
         </>
