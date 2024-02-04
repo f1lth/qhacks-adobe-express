@@ -1,7 +1,8 @@
+<h1 align=center>
 
+<img align="center" alt="Glyph Logo" width="300px" src="https://i.ibb.co/NZybN1z/Untitled-removebg-preview.png" />
 
-<img align="center" alt="Glyph Logo" width="300px" src="https://i.ibb.co/CBzwHVX/Untitled.png" />
-
+</h1>
 # Adobe Express Plugin for QHACKS24
 
 Welcome to the Adobe Express Plugin! This plugin integrates advanced AI capabilities with Adobe Express, enabling users to leverage the power of GPT-4 for caption generation and image generation. Enhance your Adobe Express experience with seamless AI integration!
