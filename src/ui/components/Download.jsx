@@ -280,7 +280,7 @@ export function DownloadButton({ addOnUISdk, sandboxProxy }) {
                 '   &:hover': {
                       backgroundColor: '#FFFFFF', // Use a lighter font weight
                     }}}>
-                    Crush
+                    crush
                 </Button>
 
                 <Button id="prompt-submit" size="m" onClick={() => vaporwave(imageBlob, {})}
@@ -289,7 +289,7 @@ export function DownloadButton({ addOnUISdk, sandboxProxy }) {
                 '   &:hover': {
                       backgroundColor: '#FFFFFF', // Use a lighter font weight
                     }}}>
-                    Vaporwave
+                    vaporwave
                 </Button>
             
             
@@ -299,19 +299,20 @@ export function DownloadButton({ addOnUISdk, sandboxProxy }) {
                 '   &:hover': {
                       backgroundColor: '#FFFFFF', // Use a lighter font weight
                     }}}>
-                    Microwave
+                    microwave
                 </Button>
             </div>
             {filterImage && 
                 
                     
                     <Button id="prompt-submit" size="m"  onClick={() => handleInsertImage()}
-                    style={{width: "100%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228', 
+                    style={{width: "100%", fontFamily: 'JetBrains Mono, monospace',
+                    fontWeight: 'bold', fontSize: '13px', color: '#000000',  backgroundColor: '#FFFFFF', 
                     transition: 'background-color 0.3s', // Add a smooth transition for background color
                 '   &:hover': {
                       backgroundColor: '#FFFFFF', // Use a lighter font weight
                     }}}>
-                    Insert
+                    - insert -
                 </Button>
     }
         </div>     

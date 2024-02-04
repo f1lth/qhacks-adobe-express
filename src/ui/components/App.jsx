@@ -10,6 +10,7 @@ import { Theme } from "@swc-react/theme";
 import React from "react";
 import "./App.css";
 import { DownloadButton } from "./Download";
+import glyphlogo from '../assets/glyph-logos_black.png'
 
 const App = ({ addOnUISdk, sandboxProxy }) => {
 
@@ -17,7 +18,15 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         // Please note that the below "<Theme>" component does not react to theme changes in Express.
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
-            <div className="container">
+            <div className="container" style={{ position: 'relative', height: '100vh' }}>
+            <img src={glyphlogo} style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    margin: '0px', // Adjust as needed
+                    width: '70px', // Adjust as needed
+                    height: '75px' // Adjust as needed
+                }} />
             <h1 style={{fontFamily: 'JetBrains Mono, monospace'}}>moshfilters</h1>
                 
                 <p style={{fontFamily: 'JetBrains Mono, monospace'}}>
