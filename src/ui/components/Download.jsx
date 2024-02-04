@@ -305,7 +305,7 @@ export function DownloadButton({ addOnUISdk, sandboxProxy }) {
             {filterImage && 
                 
                     
-                    <Button id="prompt-submit" size="m"  onClick={() => handleInsertImage()}>
+                    <Button id="prompt-submit" size="m"  onClick={() => handleInsertImage()}
                     style={{width: "100%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228', 
                     transition: 'background-color 0.3s', // Add a smooth transition for background color
                 '   &:hover': {
