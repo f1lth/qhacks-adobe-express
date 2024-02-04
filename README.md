@@ -1,6 +1,6 @@
 
 
-<img align="center" alt="Glyph Logo" width="22px" src="https://i.ibb.co/CBzwHVX/Untitled.png" />
+<img align="center" alt="Glyph Logo" width="300px" src="https://i.ibb.co/CBzwHVX/Untitled.png" />
 
 # Adobe Express Plugin for QHACKS24
 
