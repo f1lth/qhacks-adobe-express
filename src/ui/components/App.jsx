@@ -18,8 +18,9 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
             <div className="container">
-                <h1>Destroy Image</h1>
-                <p>
+            <h1 style={{fontFamily: 'JetBrains Mono, monospace'}}>moshfilters</h1>
+                
+                <p style={{fontFamily: 'JetBrains Mono, monospace'}}>
                     Canvas Loaded! Click the buttons below to edit and filter your image. 
                 </p>
                 <DownloadButton addOnUISdk={addOnUISdk} sandboxProxy={sandboxProxy}/>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Theme } from "@swc-react/theme";
 import { Button } from "@swc-react/button";
 import ReactLoading from 'react-loading';
-
+import IconButton from '@mui/material/IconButton';
+import CachedIcon from '@mui/icons-material/Cached';
+import Typography from '@mui/material/Typography';
 import "@spectrum-web-components/theme/express/scale-medium.js";
 import "@spectrum-web-components/theme/express/theme-light.js";
 
@@ -110,8 +111,8 @@ export function DownloadButton({ addOnUISdk, sandboxProxy }) {
           
             // ヾ(⌐■_■)ノ♪
             for (let i = 0; i < data.length; i += 4) {
-              data[i + 0] = min(data[i + 0] * 1.4, 31);
-              data[i + 1] = min(data[i + 1] * 1.4, 124);
+              data[i + 0] = min(data[i + 0] * 1.4, 255);
+              data[i + 1] = min(data[i + 1] * 1.4, 1);
               data[i + 2] = min(data[i + 2] * 1.4, 255);
             }
           
@@ -258,30 +259,62 @@ export function DownloadButton({ addOnUISdk, sandboxProxy }) {
     return (
         // make it so its either loading or displaying the image
         loading ? <ReactLoading type={"spin"} color={"#000000"} height={667} width={375} /> :
-        <>
+        <div className="container">
 
             
-            <div className="container">
-                <img src={previewImage}/> 
+        <div className="container" style={{display: "flex",}}>
+                <img src={previewImage} style={{paddingBottom: '10px'}}/> 
 
-                <Button onClick={() => handleDownload()}>Reload Canvas</Button>
-            </div>
+                
+                <IconButton aria-label="checkbox" style={{ color: "#242424",borderRadius: '40px', marginTop: "3px"}}
+                        onClick={() => handleDownload()}>
+                            <CachedIcon />
+                            <Typography variant="body2" style={{ fontSize: '0.8rem', fontFamily: 'JetBrains Mono, monospace'}}> reload canvas</Typography>
+                  </IconButton>
             
-            <div className="container">
-                <Button onClick={() => processImageBlob(imageBlob, {})}>Crush</Button>
-            </div>
-            <div className="container">
-                <Button onClick={() => vaporwave(imageBlob)}>Vaporwave</Button>
-            </div>
-            <div className="container">
-                <Button onClick={() => fattycatty(imageBlob)}>Blast</Button>
+            
+            
+                <Button id="prompt-submit" size="m" onClick={() => processImageBlob(imageBlob, {})}
+                    style={{width: "90%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228', margin: "5px", 
+                    transition: 'background-color 0.3s', // Add a smooth transition for background color
+                '   &:hover': {
+                      backgroundColor: '#FFFFFF', // Use a lighter font weight
+                    }}}>
+                    Crush
+                </Button>
+
+                <Button id="prompt-submit" size="m" onClick={() => vaporwave(imageBlob, {})}
+                    style={{width: "90%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228', margin: "5px", 
+                    transition: 'background-color 0.3s', // Add a smooth transition for background color
+                '   &:hover': {
+                      backgroundColor: '#FFFFFF', // Use a lighter font weight
+                    }}}>
+                    Vaporwave
+                </Button>
+            
+            
+                <Button id="prompt-submit" size="m"  onClick={() => fattycatty(imageBlob)}
+                    style={{width: "90%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228', margin: "5px", 
+                    transition: 'background-color 0.3s', // Add a smooth transition for background color
+                '   &:hover': {
+                      backgroundColor: '#FFFFFF', // Use a lighter font weight
+                    }}}>
+                    Microwave
+                </Button>
             </div>
             {filterImage && 
-                <div className="container">
-                    <Button onClick={() => handleInsertImage()}>Insert</Button>
-                </div>}
-                </>
+                
+                    
+                    <Button id="prompt-submit" size="m"  onClick={() => handleInsertImage()}
+                    style={{width: "100%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228', 
+                    transition: 'background-color 0.3s', // Add a smooth transition for background color
+                '   &:hover': {
+                      backgroundColor: '#FFFFFF', // Use a lighter font weight
+                    }}}>
+                    Insert
+                </Button>
+    }
+        </div>     
         
     );
 }
-

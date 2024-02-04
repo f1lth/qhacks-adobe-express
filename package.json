@@ -15,11 +15,16 @@
         "panel"
     ],
     "dependencies": {
+        "@emotion/react": "^11.11.3",
+        "@emotion/styled": "^11.11.0",
         "@ffmpeg/core": "^0.12.6",
         "@ffmpeg/ffmpeg": "^0.12.10",
         "@ffmpeg/util": "^0.12.1",
+        "@mui/icons-material": "^5.15.7",
+        "@mui/material": "^5.15.7",
         "@swc-react/button": "0.39.4",
         "@swc-react/theme": "0.39.4",
+        "dotenv-webpack": "^8.0.1",
         "ffmpeg": "^0.0.4",
         "fluent-ffmpeg": "^2.1.2",
         "react": "18.2.0",

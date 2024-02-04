@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 const isEnvProduction = process.env.NODE_ENV === "production";
 
@@ -33,10 +34,15 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [{ from: "src/*.json", to: "[name][ext]" }]
-        })
+        }),
+        new Dotenv()
     ],
     module: {
         rules: [
+            {
+                test: /\.(woff|woff2|ttf|eot)$/,
+                use: 'file-loader?name=fonts/[name].[ext]!static'
+               },
             {
                 test: /\.(js|jsx)$/,
                 use: ["babel-loader"],
@@ -45,24 +51,38 @@ module.exports = {
             {
                 test: /(\.css)$/,
                 use: ["style-loader", "css-loader"]
-            }
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                      query: {
+                        name:'assets/[name].[ext]'
+                      }
+                    }
+                  },
+                  {
+                    loader: 'image-webpack-loader',
+                    options: {
+                      query: {
+                        mozjpeg: {
+                          progressive: true,
+                        },
+                        gifsicle: {
+                          interlaced: true,
+                        },
+                        optipng: {
+                          optimizationLevel: 7,
+                        }
+                      }
+                    }
+                  }]
+              }
         ]
     },
     resolve: {
         extensions: [".jsx", ".js", ".css"]
-    },
-    
-
-        // other webpack configurations...
-        devServer: {
-          headers: {
-
-              headers: {
-                'Cross-Origin-Opener-Policy': 'same-origin',
-                'Cross-Origin-Embedder-Policy': 'require-corp',
-          }
-        },
-        },
-        
-      
+    }
 };
