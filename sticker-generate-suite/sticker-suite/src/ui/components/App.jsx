@@ -6,8 +6,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
-import JetBrainFont from '../fonts/JetBrainsMono-Regular.ttf';
-
+import glyphlogo from '../assets/glyph-logos_black.png'
 
 const axios = require('axios');
 
@@ -95,13 +94,17 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
 
-            <div className="logo" style={{display:"flex", justifyContent: "center",
-                                        alignItems: "center", width: "100%", height: "100%",
-                                        marginTop: "10px", marginBottom: "-25px" }}>
-                <h1 style={{fontFamily: 'Proxima Nova, monospace', color: green[900]}}>glyph.</h1>
-            </div>
 
-            <div className="container">
+            <div className="container"  style={{ position: 'relative', height: '100vh' }}>
+            <img src={glyphlogo} style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    margin: '0px', // Adjust as needed
+                    width: '70px', // Adjust as needed
+                    height: '75px' // Adjust as needed
+                }} />
+            <h1 style={{fontFamily: 'JetBrains Mono, monospace'}}>ai sticker</h1>
                 <h1 style={{fontFamily: 'JetBrains Mono, monospace'}}>sticker</h1>
                 <h1 style={{fontFamily: 'JetBrains Mono, monospace', color: lightGreen[700], marginTop: '-10px' }}>generator</h1>
                 <input
@@ -122,7 +125,6 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
                         transition: '0.3s', // Add a smooth transition for focus
                     }}
                 />
-                <div style={{display: "flex",}}>
                 <Button id="prompt-submit" size="m" onClick={handleGenerateButtonClick}
                 style={{width: "60%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228',
                 transition: 'background-color 0.3s', // Add a smooth transition for background color
@@ -131,12 +133,11 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
             }}}>
                     create sticker
                 </Button>
-                </div>
                 {/* Load the Circular Progress here. */}
                 <div style={{display:"flex", justifyContent: "center",
-                                        alignItems: "center", width: "100%", height: "100%",
-                                        marginTop: "10px" }}>
-                    {loading && <CircularProgress/>}
+                                        alignItems: "center",
+                                        marginTop: "25px" }}>
+                    {loading && <CircularProgress style={{color:green[200]}}/>}
                 </div>
                 {sticker && (
                 <><h3>Previewed Image</h3><div className="preview-container">
