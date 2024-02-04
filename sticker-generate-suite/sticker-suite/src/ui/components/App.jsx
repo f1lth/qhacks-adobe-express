@@ -6,23 +6,23 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
+import JetBrainFont from '../fonts/JetBrainsMono-Regular.ttf';
 
 
 const axios = require('axios');
 
 const API_KEY=process.env.API_KEY;
 
-import { blue, red } from '@mui/material/colors';
+import { indigo, red, lightGreen, green } from '@mui/material/colors';
 
 
 
-// To learn more about using "swc-react" visit:
-// https://opensource.adobe.com/spectrum-web-components/using-swc-react/
 import { Button } from "@swc-react/button";
 import IconButton from '@mui/material/IconButton';
 import { Theme } from "@swc-react/theme";
 import React from "react";
 import "./App.css";
+import logo from '../assets/asset.png';
 
 const url = "https://api.segmind.com/v1/segmind-vega";
 
@@ -35,7 +35,7 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         
 
     const data = {
-        "prompt": `Create a playful and fun sticker featuring a cartoon-style ${prompt}. The sticker should have a transparent background, vibrant colors, and a cheerful theme. The ${prompt} should be depicted in a cute and whimsical manner, suitable for a wide range of ages. Emphasize a friendly and engaging appearance, with exaggerated features typical of cartoon art. The sticker should be appealing for use in casual and light-hearted contexts, such as messaging apps or personal decoration.`,
+        "prompt": `RETURN TRANSPARENT PNG ONLY. TRANSPARENT PNG. Create a playful and fun sticker featuring a cartoon-style ${prompt}. The sticker should have a transparent background, vibrant colors, and a cheerful theme. The ${prompt} should be depicted in a cute and whimsical manner, suitable for a wide range of ages. Emphasize a friendly and engaging appearance, with exaggerated features typical of cartoon art. The sticker should be appealing for use in casual and light-hearted contexts, such as messaging apps or personal decoration.`,
         "negative_prompt": "(worst quality, low quality)",
         "samples": 1,
         "scheduler": "UniPC",
@@ -80,6 +80,7 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
     async function handleRemoveImage() {
     console.log("Removing sticker..");
     setSticker('');
+    setPrompt('');
     }
 
     async function getObjectFromURL (objectURL) {
@@ -94,30 +95,61 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
 
+            <div className="logo" style={{display:"flex", justifyContent: "center",
+                                        alignItems: "center", width: "100%", height: "100%",
+                                        marginTop: "10px", marginBottom: "-25px" }}>
+                <h1 style={{fontFamily: 'Proxima Nova, monospace', color: green[900]}}>glyph.</h1>
+            </div>
+
             <div className="container">
-                <h1>Sticker Generator</h1>
+                <h1 style={{fontFamily: 'JetBrains Mono, monospace'}}>sticker</h1>
+                <h1 style={{fontFamily: 'JetBrains Mono, monospace', color: lightGreen[700], marginTop: '-10px' }}>generator</h1>
                 <input
                     id="prompt-input"
                     type="text"
                     value={prompt}
+                    placeholder="Enter a prompt to generate a sticker.."
                     onChange={(e) => setPrompt(e.target.value)}
+                    style={{
+                        padding: '10px',
+                        border: '1px solid #ccc',
+                        backgroundColor: '#f0f0f0',
+                        fontSize: '10px',
+                        color: '#333',
+                        outline: 'none', // Remove the default outline on focus
+                        fontFamily: 'JetBrains Mono, monospace', // Change the font
+                        borderRadius: '4px', // Add rounded corners
+                        transition: '0.3s', // Add a smooth transition for focus
+                    }}
                 />
-                <Button id="prompt-submit" size="m" onClick={handleGenerateButtonClick}>
-                    Create Image
+                <div style={{display: "flex",}}>
+                <Button id="prompt-submit" size="m" onClick={handleGenerateButtonClick}
+                style={{width: "60%", fontFamily: 'JetBrains Mono, monospace', fontWeight: 'lighter', fontSize: '13px', backgroundColor: '#28A228',
+                transition: 'background-color 0.3s', // Add a smooth transition for background color
+                '&:hover': {
+                    backgroundColor: '#FFFFFF', // Use a lighter font weight
+            }}}>
+                    create sticker
                 </Button>
+                </div>
                 {/* Load the Circular Progress here. */}
-                {loading && <CircularProgress/>}
+                <div style={{display:"flex", justifyContent: "center",
+                                        alignItems: "center", width: "100%", height: "100%",
+                                        marginTop: "10px" }}>
+                    {loading && <CircularProgress/>}
+                </div>
                 {sticker && (
                 <><h3>Previewed Image</h3><div className="preview-container">
                     <div className="image-container">
                         <img src={sticker} alt="sticker"/>
                     </div>
                     <div className="icon-buttons">
-                        <IconButton aria-label="checkbox" style={{ color: blue[500] }} onClick={handleInsertImage}>
+                        <IconButton aria-label="checkbox" style={{ color: green[700],borderRadius: '40px'}}
+                        onClick={handleInsertImage}>
                             <CheckBoxIcon />
                             <Typography variant="body2" style={{ fontSize: '0.8rem' }}>Insert</Typography>
                         </IconButton>
-                        <IconButton aria-label="close" style={{ color: red[500] }}>
+                        <IconButton aria-label="close" style={{ color: red[500], borderRadius: '40px' }}>
                             <CloseIcon />
                             <Typography variant="body2" style={{ fontSize: '0.8rem' }} onClick={handleRemoveImage}>Retry</Typography>
                         </IconButton>     
