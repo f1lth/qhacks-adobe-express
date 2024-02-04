@@ -17,6 +17,7 @@
     "dependencies": {
         "@swc-react/button": "0.39.4",
         "@swc-react/theme": "0.39.4",
+        "axios": "^1.6.7",
         "openai": "^4.26.0",
         "react": "18.2.0",
         "react-dom": "18.2.0"
