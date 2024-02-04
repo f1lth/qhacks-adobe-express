@@ -1,7 +1,7 @@
 
 # Adobe Express Plugin for QHACKS24
 
-Welcome to the Adobe Express Plugin! This plugin integrates advanced AI capabilities with Adobe Express, enabling users to leverage the power of GPT-4 for text generation and advanced image processing. Get ready to enhance your Adobe Express experience with seamless AI integration!
+Welcome to the Adobe Express Plugin! This plugin integrates advanced AI capabilities with Adobe Express, enabling users to leverage the power of GPT-4 for caption generation and image generation. Enhance your Adobe Express experience with seamless AI integration!
 
 ## Prerequisites
 
@@ -19,8 +19,8 @@ Follow these steps to set up the Adobe Express Plugin:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone [repository URL]
-cd [repository directory]
+git clone https://github.com/f1lth/qhacks-adobe-express
+cd qhacks-adobe-express
 ```
 
 ### Step 2: Set Up Environment Variables
